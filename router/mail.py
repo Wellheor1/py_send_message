@@ -1,7 +1,9 @@
-import smtplib
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter
+from pydantic import BaseModel
+
 from mail.main import send
+from mail.types import Emails
 
 # Создаём роутер
 router = APIRouter(
@@ -11,6 +13,6 @@ router = APIRouter(
 
 
 @router.post("/send")
-async def send_mail():
-    result = send()
+async def send_mail(emails: Emails):
+    result = send(emails)
     return JSONResponse(result)
