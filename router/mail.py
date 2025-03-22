@@ -1,14 +1,13 @@
 from fastapi.responses import JSONResponse
-from fastapi import APIRouter
-from pydantic import BaseModel
-
+from fastapi import APIRouter, Depends
 from mail.main import send
 from mail.types import Emails
+from mail.utils import check_settings
 
-# Создаём роутер
 router = APIRouter(
     prefix="/mail",
-    tags=["mail"]
+    tags=["mail"],
+    dependencies=[Depends(check_settings)]
 )
 
 
