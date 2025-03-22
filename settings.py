@@ -9,6 +9,6 @@ MODULES = {
 }
 
 try:
-    from settings.local_settings.local_server import *
+    from local_settings import *
 except ImportError:
     pass

@@ -12,3 +12,4 @@ if MODULES.get("mail"):
 @app.get("/", tags=["main"])
 async def root():
     return JSONResponse({"message": "Hello World Well"})
+
