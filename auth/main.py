@@ -1,6 +1,6 @@
 from fastapi import Header, HTTPException
 from typing_extensions import Annotated
-from settings.server import BEARER_TOKEN
+from settings import BEARER_TOKEN
 
 
 async def verify_bearer_token(authorization: Annotated[str, Header()]):

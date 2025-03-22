@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 
-settings/local_settings/
+*local_settings.py

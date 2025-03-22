@@ -8,6 +8,6 @@ SMTP_SUBJECT = "Subject"
 SMTP_TEXT = "message"
 
 try:
-    from settings.local_settings.local_mail import *
+    from mail.local_settings import *
 except ImportError:
     pass

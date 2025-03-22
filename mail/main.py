@@ -1,6 +1,6 @@
 import smtplib
 from mail.types import Emails
-from settings.mail import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_SECURE
+from mail.settings import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_SECURE
 
 
 def send(emails: Emails):
