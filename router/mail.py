@@ -1,7 +1,7 @@
 import smtplib
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter
-from settings.mail import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
+from mail.main import send
 
 # Создаём роутер
 router = APIRouter(
@@ -12,7 +12,5 @@ router = APIRouter(
 
 @router.post("/send")
 async def send_mail():
-    smtp = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
-    smtp.starttls()
-    smtp.login(SMTP_USER, SMTP_PASSWORD)
-    return JSONResponse({"ok": True, "message": ""})
+    result = send()
+    return JSONResponse(result)
