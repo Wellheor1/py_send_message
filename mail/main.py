@@ -1,12 +1,13 @@
 import smtplib
 
-from settings.mail import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
+from settings.mail import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_SECURE
 from mail.utils import create_body
 
 
 def send():
     smtp = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
-    smtp.starttls()
+    if SMTP_SECURE:
+        smtp.starttls()
     smtp.login(SMTP_USER, SMTP_PASSWORD)
     subject = "Тестовый заголовок"
     message = "Тело письма"
