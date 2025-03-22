@@ -7,6 +7,6 @@ app = FastAPI(dependencies=[Depends(verify_bearer_token)])
 app.include_router(mail_router)
 
 
-@app.get("/")
+@app.get("/", tags=["main"])
 async def root():
     return JSONResponse({"message": "Hello World Well"})
