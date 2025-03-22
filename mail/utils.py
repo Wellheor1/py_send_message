@@ -4,7 +4,8 @@ from fastapi import HTTPException
 
 async def check_settings():
     mail_dir = os.path.dirname(os.path.abspath(__file__))
-    local_settings_path = os.path.join(mail_dir, "/local_settings.py")
+    local_settings_path = os.path.join(mail_dir, "local_settings.py")
+    print(local_settings_path)
     module_configured = os.path.exists(local_settings_path)
     if not module_configured:
         raise HTTPException(status_code=500, detail="module mail is not configured")
