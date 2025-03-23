@@ -17,9 +17,10 @@ async def send(emails: list[Email]):
             body = MIMEMultipart()
             body["Subject"] = email.subject
             text_part = MIMEText(email.message, "plain")
-            attachments = MIMEApplication(email.attachments, "pdf")
-            attachments.add_header("Content-Disposition", "attachment", filename="file.pdf")
             body.attach(text_part)
-            body.attach(attachments)
+            for attachment in email.attachments:
+                current_attachment = MIMEApplication(attachment.content, attachment.contentType)
+                current_attachment.add_header("Content-Disposition", "attachment", filename=attachment.filename)
+                body.attach(attachment)
             server.sendmail(SMTP_USER, email.to, body.as_string())
     return {"ok": True, "message": ""}
