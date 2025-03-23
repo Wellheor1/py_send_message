@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Attachment(BaseModel):
-    encoding: str
+    encoding: str | None = None
     filename: str
     content: str
     contentType: str
@@ -11,8 +11,8 @@ class Attachment(BaseModel):
 class Email(BaseModel):
     to: str | list
     subject: str
-    message: str | None
-    attachments: list[Attachment] | None
+    message: str | None = None
+    attachments: list[Attachment] | None = None
 
 
 class Emails(BaseModel):

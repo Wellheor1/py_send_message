@@ -1,6 +1,7 @@
 import logging
 import os
 import smtplib
+from email import encoders
 
 from mail.settings import SMTP_SECURE
 
@@ -21,3 +22,11 @@ def create_smtp():
     else:
         smtp = smtplib.SMTP
     return smtp
+
+
+def get_encoder(encoding: str):
+    encodings = {
+        "base64": encoders.encode_base64,
+    }
+    result = encodings.get(encoding)
+    return result
