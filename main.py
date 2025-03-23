@@ -10,7 +10,6 @@ from mail.utils import check_settings as mail_check_settings
 from utils import check_settings as main_check_settings
 
 app = FastAPI(dependencies=[Depends(verify_bearer_token)])
-logging.basicConfig(level=logging.INFO)
 main_check_settings()
 if MODULES.get("mail"):
     app.include_router(mail_router)
