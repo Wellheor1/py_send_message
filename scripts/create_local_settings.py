@@ -2,11 +2,14 @@ import logging
 import os
 import shutil
 import sys
+
 sys.path.append('../py_send_message')
 from settings import MODULES
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 logger = logging.getLogger("create_settings_file")
+
+
 def create_local_settings_path(directory):
     local_settings_file_path = os.path.join(directory, 'local_settings.py')
     return local_settings_file_path
