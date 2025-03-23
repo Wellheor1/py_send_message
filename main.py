@@ -1,5 +1,4 @@
 import logging
-
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 from auth.main import verify_bearer_token
@@ -9,7 +8,7 @@ from mail.utils import check_settings as mail_check_settings
 from utils import check_settings as main_check_settings
 
 app = FastAPI(dependencies=[Depends(verify_bearer_token)])
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format=f'%(levelname)s:    %(message)s')
 main_check_settings()
 
 if MODULES.get("mail"):
