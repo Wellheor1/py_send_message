@@ -2,10 +2,10 @@ from pydantic import BaseModel
 
 
 class Email(BaseModel):
-    to: str
+    to: str | list
     subject: str
     message: str
-    attachments: str
+    attachments: str | list
 
 
 class Emails(BaseModel):

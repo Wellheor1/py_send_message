@@ -11,7 +11,6 @@ router = APIRouter(
 
 
 @router.post("/send")
-async def send_mail(emails: Emails):
-    # result = send(emails)
-    result = {"ok": True, "message": ""}
+async def send_mail(body: Emails):
+    result = await send(body.emails)
     return JSONResponse(result)
