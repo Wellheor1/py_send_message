@@ -7,7 +7,6 @@ from mail.utils import check_settings
 router = APIRouter(
     prefix="/mail",
     tags=["mail"],
-    dependencies=[Depends(check_settings)]
 )
 
 
