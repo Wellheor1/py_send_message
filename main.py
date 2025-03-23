@@ -1,4 +1,6 @@
 import logging
+
+import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 from auth.main import verify_bearer_token
@@ -10,7 +12,6 @@ from utils import check_settings as main_check_settings
 app = FastAPI(dependencies=[Depends(verify_bearer_token)])
 logging.basicConfig(level=logging.INFO, format=f'%(levelname)s:    %(message)s')
 main_check_settings()
-
 if MODULES.get("mail"):
     app.include_router(mail_router)
     mail_check_settings()
@@ -19,4 +20,5 @@ if MODULES.get("mail"):
 @app.get("/", tags=["main"])
 async def root():
     return JSONResponse({"message": "Hello World Well"})
+
 
