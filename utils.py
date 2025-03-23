@@ -10,3 +10,4 @@ def check_settings():
     local_settings_exists = os.path.exists(local_settings_path)
     if not local_settings_exists:
         logger.warning("There is no local settings file for the main module")
+
