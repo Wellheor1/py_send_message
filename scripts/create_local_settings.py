@@ -1,21 +1,36 @@
+import os
+import shutil
 import sys
 sys.path.append('../py_send_message')
 from settings import MODULES
 
+
+def create_local_settings_path(directory):
+    local_settings_file_path = os.path.join(directory, 'local_settings.py')
+    return local_settings_file_path
+
+
+def copy_settings_file(directory):
+    shutil.copy(os.path.join(directory, 'settings.py'), os.path.join(directory, 'local_settings.py'))
+
+
+def find_project_dir():
+    scripts_directory = os.path.dirname(__file__)
+    project_directory = os.path.dirname(scripts_directory)
+    return project_directory
+
+
+project_dir = find_project_dir()
+local_settings_file = create_local_settings_path(project_dir)
+project_settings_exists = os.path.isfile(local_settings_file)
+if not project_settings_exists:
+    copy_settings_file(project_dir)
+
 modules = {module for module in MODULES if MODULES[module]}
-print(modules)
-# settings_dir = os.path.join(root_dir, 'settings')
-# local_settings_dir = os.path.join(root_dir, 'settings', 'local_settings')
-# ignore_files = {'__init__.py', '__pycache__', 'local_settings'}
-# print(f'Копирование файлов\nиз: {settings_dir}\nв {local_settings_dir}')
-#
-# settings_files = set(os.listdir(settings_dir)) - ignore_files
-# local_settings_files = set(os.listdir(local_settings_dir)) - ignore_files
-#
-# local_settings_files = {file_name.split('_')[1] for file_name in local_settings_files}
-#
-# files_to_copy = settings_files - local_settings_files
-# print('Следующие файлы будут скопированы:', files_to_copy)
-# for file_name in files_to_copy:
-#     shutil.copy(os.path.join(settings_dir, file_name), f"{local_settings_dir}/local_{file_name}")
-# print('Файлы успешно скопированы')
+for module in modules:
+    module_dir = os.path.join(project_dir, module)
+    local_settings_file = create_local_settings_path(module_dir)
+    module_settings_exists = os.path.isfile(local_settings_file)
+    if not module_settings_exists:
+        copy_settings_file(module_dir)
+
