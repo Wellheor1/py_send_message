@@ -1,8 +1,7 @@
 from fastapi.responses import JSONResponse
-from fastapi import APIRouter, Depends
-from mail.main import sends
-from mail.types import Emails
-from mail.utils import check_settings
+from fastapi import APIRouter
+from app.mail.main import sends
+from app.mail.types import Emails
 
 router = APIRouter(
     prefix="/mail",

@@ -6,7 +6,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from mail.settings import SMTP_SECURE
+from app.mail.settings import SMTP_SECURE
 
 logger = logging.getLogger("uvicorn.error")
 
