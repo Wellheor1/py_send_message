@@ -2,6 +2,9 @@ import logging
 import os
 import smtplib
 from email import encoders
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from mail.settings import SMTP_SECURE
 
@@ -30,3 +33,22 @@ def get_encoder(encoding: str):
     }
     result = encodings.get(encoding)
     return result
+
+
+def create_attachment(filename, content, content_type, encoding=None):
+    if encoding:
+        encoder = get_encoder(encoding)
+        current_attachment = MIMEApplication(content, content_type, encoder)
+    else:
+        current_attachment = MIMEApplication(content, content_type)
+    current_attachment.add_header("Content-Disposition", "attachment",
+                                  filename=filename)
+    return current_attachment
+
+
+def create_body(subject: str, message: str) -> MIMEMultipart:
+    body = MIMEMultipart()
+    body["Subject"] = subject
+    text_part = MIMEText(message, "plain")
+    body.attach(text_part)
+    return body

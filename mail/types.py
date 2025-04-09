@@ -5,7 +5,7 @@ class Attachment(BaseModel):
     encoding: str | None = None
     filename: str
     content: str
-    contentType: str
+    content_type: str
 
 
 class Email(BaseModel):

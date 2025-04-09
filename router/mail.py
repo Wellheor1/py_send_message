@@ -1,6 +1,6 @@
 from fastapi.responses import JSONResponse
 from fastapi import APIRouter, Depends
-from mail.main import send
+from mail.main import sends
 from mail.types import Emails
 from mail.utils import check_settings
 
@@ -12,5 +12,5 @@ router = APIRouter(
 
 @router.post("/send")
 async def send_mail(body: Emails):
-    result = await send(body.emails)
+    result = await sends(body.emails)
     return JSONResponse(result)
