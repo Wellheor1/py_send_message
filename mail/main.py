@@ -5,6 +5,7 @@ from mail.utils import create_smtp, create_body, create_attachment
 
 async def sends(emails: list[Email]):
     smtp = create_smtp()
+    result = []
     with smtp(SMTP_HOST, SMTP_PORT) as server:
         server.login(SMTP_USER, SMTP_PASSWORD)
         for email in emails:
@@ -12,5 +13,9 @@ async def sends(emails: list[Email]):
             for attachment in email.attachments:
                 body.attach(create_attachment(attachment.filename, attachment.content, attachment.content_type,
                                               attachment.encoding))
-            server.sendmail(SMTP_USER, email.to, body.as_string())
-    return {"ok": True, "message": ""}
+            result_send = server.sendmail(SMTP_USER, email.to, body.as_string())
+            if result_send:
+                result.append({"ok": False, "errors": result_send})
+            else:
+                result.append({"ok": True, "errors": None})
+    return {"ok": True, "message": "", "result": result}
