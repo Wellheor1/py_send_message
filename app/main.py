@@ -22,11 +22,6 @@ if MODULES.get("mail"):
 
 @app.get("/", tags=["main"])
 async def root():
-    async with async_session_maker() as session:
-        query = select(Slog.sender, Slog.recipient, Slog.status)
-        print(query)
-        result = await session.execute(query)
-        print(result)
-        all_log = result.all()
-        print(all_log)
+    result = await Slog.find_all()
+    print(result)
     return JSONResponse({"message": "Hello World Well"})

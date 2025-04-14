@@ -1,6 +1,6 @@
-from sqlalchemy import ForeignKey, text, Text,  Column, Integer, String, Enum, Boolean
+from sqlalchemy import ForeignKey, text, Text, Column, Integer, String, Enum, Boolean, select
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from app.database import Base, str_uniq, int_pk, str_null_true
+from app.database import Base, str_uniq, int_pk, str_null_true, async_session_maker
 from datetime import date
 from enum import Enum as PyEnum
 
@@ -25,3 +25,11 @@ class Slog(Base):
 
     def __repr__(self):
         return str(self)
+
+    @staticmethod
+    async def find_all():
+        async with async_session_maker() as session:
+            query = select(Slog)
+            result = await session.execute(query)
+            return result.all()
+
