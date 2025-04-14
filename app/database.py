@@ -3,7 +3,7 @@ from typing import Annotated
 
 from sqlalchemy import func
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column, sessionmaker
 
 from app.settings import get_db_url
 
@@ -29,3 +29,6 @@ class Base(AsyncAttrs, DeclarativeBase):
 
     created_at: Mapped[created_at]
     updated_at: Mapped[updated_at]
+
+
+SessionLocal = sessionmaker(autoflush=False)
