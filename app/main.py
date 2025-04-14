@@ -23,5 +23,4 @@ if MODULES.get("mail"):
 @app.get("/", tags=["main"])
 async def root():
     result = await Slog.find_all()
-    print(result)
-    return JSONResponse({"message": "Hello World Well"})
+    return JSONResponse({"ok": True, "message": "Hello World Well", "result": result})
