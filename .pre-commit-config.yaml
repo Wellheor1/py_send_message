@@ -19,14 +19,11 @@ repos:
 -   repo: https://github.com/psf/black
     rev: 22.12.0
     hooks:
-    -   id: black
-#-   repo: https://github.com/pycqa/flake8
-#    rev: 6.0.0
-#    hooks:
-#    -   id: flake8
-#        additional_dependencies:
-#            - flake8-bugbear
-#            - flake8-print
+        -   id: black
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.11.5
+    hooks:
+        -   id: ruff
 
 default_language_version:
     python: python3.12
