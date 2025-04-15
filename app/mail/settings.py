@@ -8,6 +8,6 @@ SMTP_SUBJECT = "Subject"
 SMTP_TEXT = "message"
 
 try:
-    from app.mail.local_settings import *
+    from app.mail.local_settings import *  # noqa: F403
 except ImportError:
     pass

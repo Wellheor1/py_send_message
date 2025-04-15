@@ -1,17 +1,12 @@
 from sqlalchemy import (
-    ForeignKey,
-    text,
-    Text,
     Column,
-    Integer,
     String,
     Enum,
     Boolean,
     select,
 )
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-from app.database import Base, str_uniq, int_pk, str_null_true, async_session_maker
-from datetime import date
+from sqlalchemy.orm import Mapped
+from app.database import Base, int_pk, async_session_maker
 from enum import Enum as PyEnum
 
 

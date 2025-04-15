@@ -11,7 +11,6 @@ from os.path import dirname, abspath
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from app.database import DATABASE_URL, Base
-from app.slog.models import Slog
 
 config = context.config
 config.set_main_option("sqlalchemy.url", DATABASE_URL)

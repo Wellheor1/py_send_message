@@ -16,6 +16,6 @@ DB_PASSWORD = "1234562"
 
 
 try:
-    from app.local_settings import *
+    from app.local_settings import *  # noqa: F403
 except ImportError:
     pass

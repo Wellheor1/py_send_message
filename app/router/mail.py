@@ -1,6 +1,5 @@
 from fastapi.responses import JSONResponse
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
 from app.mail.main import sends
 from app.mail.types import Emails
