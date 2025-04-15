@@ -1,6 +1,3 @@
-import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
 # Адрес и порт сервера
 ADDRESS = "127.0.0.1"
 PORT = 8000
@@ -11,24 +8,16 @@ MODULES = {
     "mail": False
 }
 
-
-class Settings(BaseSettings):
-    DB_HOST: str
-    DB_PORT: int
-    DB_NAME: str
-    DB_USER: str
-    DB_PASSWORD: str
-    model_config = SettingsConfigDict(
-        env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")
-    )
-
-
-settings = Settings()
+DB_HOST = '127.0.0.1'
+DB_PORT = 5432
+DB_NAME = 'py_send_message'
+DB_USER = 'postgres'
+DB_PASSWORD = '1234562'
 
 
 def get_db_url():
-    return (f"postgresql+asyncpg://{settings.DB_USER}:{settings.DB_PASSWORD}@"
-            f"{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}")
+    return (f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@"
+            f"{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
 
 try:

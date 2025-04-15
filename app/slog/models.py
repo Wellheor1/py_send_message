@@ -15,6 +15,7 @@ class Slog(Base):
     sender = Column(String(255))
     recipient = Column(String(255))
     status = Column(Boolean)
+    outer_id = Column(String(255))
 
     def __str__(self):
         return (f"{self.__class__.__name__}(id={self.id}, "
