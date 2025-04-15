@@ -16,7 +16,9 @@ def check_settings():
     local_settings_path = os.path.join(mail_dir, "local_settings.py")
     local_settings_exists = os.path.exists(local_settings_path)
     if not local_settings_exists:
-        logger.warning("The mail module is enabled, but there is no local settings file.")
+        logger.warning(
+            "The mail module is enabled, but there is no local settings file."
+        )
 
 
 def create_smtp():
@@ -41,8 +43,9 @@ def create_attachment(filename, content, content_type, encoding=None):
         current_attachment = MIMEApplication(content, content_type, encoder)
     else:
         current_attachment = MIMEApplication(content, content_type)
-    current_attachment.add_header("Content-Disposition", "attachment",
-                                  filename=filename)
+    current_attachment.add_header(
+        "Content-Disposition", "attachment", filename=filename
+    )
     return current_attachment
 
 

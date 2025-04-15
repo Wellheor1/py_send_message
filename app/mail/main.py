@@ -11,8 +11,14 @@ async def sends(emails: list[Email]):
         for email in emails:
             body = create_body(email.subject, email.message)
             for attachment in email.attachments:
-                body.attach(create_attachment(attachment.filename, attachment.content, attachment.content_type,
-                                              attachment.encoding))
+                body.attach(
+                    create_attachment(
+                        attachment.filename,
+                        attachment.content,
+                        attachment.content_type,
+                        attachment.encoding,
+                    )
+                )
             result_send = server.sendmail(SMTP_USER, email.to, body.as_string())
             if result_send:
                 result.append({"ok": False, "errors": result_send})
