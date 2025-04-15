@@ -33,4 +33,3 @@ class Slog(Base):
             query = select(Slog)
             result = await session.execute(query)
             return result.all()
-
