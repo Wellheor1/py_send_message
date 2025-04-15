@@ -1,10 +1,6 @@
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
 from app.auth.main import verify_bearer_token
-from app.database import async_session_maker
 from app.router.mail import router as mail_router
 from app.settings import MODULES
 from app.mail.utils import check_settings as mail_check_settings
