@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Result(BaseModel):
-    ok: bool
-    message: str
-    result: dict | list
+    ok: bool = Field(..., description="Статус запроса")
+    message: str = Field(..., description="Сообщение")
+    result: dict | list = Field(..., description="Результата запроса")
