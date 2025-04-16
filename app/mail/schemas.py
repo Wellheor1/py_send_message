@@ -1,10 +1,9 @@
 from pydantic import BaseModel
 
 
-class Result(BaseModel):
+class SendResult(BaseModel):
     ok: bool
-    message: str
-    result: dict | list
+    errors: dict
 
 
 class Attachment(BaseModel):
