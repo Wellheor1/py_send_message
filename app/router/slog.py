@@ -2,8 +2,6 @@ from fastapi.responses import JSONResponse
 from fastapi import APIRouter
 
 from app.dao.base import find_all
-
-# from app.slog.dao import SlogDao
 from app.slog.models import Slog
 from app.slog.schemas import SSlog
 
