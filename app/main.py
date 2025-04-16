@@ -9,14 +9,15 @@ from app.utils import check_settings as main_check_settings
 
 app = FastAPI(dependencies=[Depends(verify_bearer_token)])
 
-
 main_check_settings()
-if MODULES.get("mail"):
-    app.include_router(mail_router)
-    mail_check_settings()
 
 
 @app.get("/", tags=["main"])
 async def root():
     result = await Slog.find_all()
     return JSONResponse({"ok": True, "message": "Hello World Well", "result": result})
+
+
+if MODULES.get("mail"):
+    app.include_router(mail_router)
+    mail_check_settings()
