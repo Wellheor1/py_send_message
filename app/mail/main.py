@@ -1,4 +1,4 @@
-from app.mail.types import Email
+from app.mail.schemas import Email
 from app.mail.settings import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
 from app.mail.utils import create_smtp, create_body, create_attachment
 
