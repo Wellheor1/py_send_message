@@ -1,5 +1,5 @@
 from fastapi.responses import JSONResponse
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Query
 
 from app.dao.base import find_all
 from app.slog.models import Slog
@@ -13,6 +13,6 @@ router = APIRouter(
 
 
 @router.get("/", summary="get all logs", response_model=list[SSlog])
-async def get_all(query_params: QueryParamSlog = Depends()):
+async def get_all(query_params: QueryParamSlog = Query()):
     result = await find_all(Slog, **query_params.to_dict())
     return JSONResponse(result)

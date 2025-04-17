@@ -1,25 +1,13 @@
+from pydantic import BaseModel, Field
+
 from app.slog.models import LogType
 
 
-# class SlogQueryParam(BaseModel):
-#     slog_id: int | None = None
-#     log_type: LogType | None = None
-#     status: bool | None = None
-#     outer_id: int | None = None
-
-
-class QueryParamSlog:
-    def __init__(
-        self,
-        slog_id: int | None = None,
-        log_type: LogType | None = None,
-        status: bool | None = None,
-        outer_id: int | None = None,
-    ):
-        self.id = slog_id
-        self.log_type = log_type
-        self.status = status
-        self.outer_id = outer_id
+class QueryParamSlog(BaseModel):
+    id: int | None = Field(None, description="id события")
+    log_type: LogType | None = Field(None, description="Тип события")
+    status: bool | None = Field(None, description="Статус события")
+    outer_id: int | None = Field(None, description="id внешней системы")
 
     def to_dict(self) -> dict:
         data = {
