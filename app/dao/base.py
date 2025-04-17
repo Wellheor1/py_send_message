@@ -13,4 +13,4 @@ async def find_by_id(model, entity_id: int):
     async with async_session_maker() as session:
         query = select(model).filter_by(id=entity_id)
         result = await session.execute(query)
-        return result.scalars_one_or_none()
+        return result.scalar_one_or_none()

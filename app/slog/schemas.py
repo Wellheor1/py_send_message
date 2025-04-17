@@ -11,3 +11,13 @@ class SSlog(BaseModel):
     outer_id: str = Field(
         ..., description="id в отправившей системе, от 1 до 255 символов"
     )
+
+
+class ResultSSlog(BaseModel):
+    ok: bool
+    message: str
+    result: SSlog | None
+
+
+class ResultSSlogs(ResultSSlog):
+    result: list[SSlog]

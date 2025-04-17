@@ -4,7 +4,7 @@ from fastapi import APIRouter, Query, Path
 from app.dao.base import find_all, find_by_id
 from app.slog.models import Slog
 from app.slog.query_params import QueryParamSlog
-from app.slog.schemas import SSlog
+from app.slog.schemas import ResultSSlog, ResultSSlogs
 
 router = APIRouter(
     prefix="/slogs",
@@ -12,13 +12,18 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary="Получить все записи логов", response_model=list[SSlog])
+@router.get("/", summary="Получить все записи логов", response_model=ResultSSlogs)
 async def get_all(query_params: QueryParamSlog = Query()):
-    result = await find_all(Slog, **query_params.to_dict())
+    slogs = await find_all(Slog, **query_params.to_dict())
+    result = {"ok": True, "message": "", "result": slogs}
     return JSONResponse(result)
 
 
-@router.get("/{slog_id}", summary="Получить логи по id", response_model=SSlog)
+@router.get("/{slog_id}", summary="Получить логи по id", response_model=ResultSSlog)
 async def get_by_id(slog_id: int = Path()):
-    result = await find_by_id(Slog, slog_id)
+    slog = await find_by_id(Slog, slog_id)
+    if slog:
+        result = {"ok": True, "message": "", "result": slog}
+    else:
+        result = {"ok": False, "message": "Лога с таким id нет", "result": slog}
     return JSONResponse(result)
