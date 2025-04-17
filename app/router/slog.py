@@ -8,7 +8,7 @@ from app.slog.schemas import ResultSSlog, ResultSSlogs
 
 router = APIRouter(
     prefix="/slogs",
-    tags=["slog"],
+    tags=["Системные логи"],
 )
 
 

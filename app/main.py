@@ -13,7 +13,7 @@ app = FastAPI(dependencies=[Depends(verify_bearer_token_v2)])
 main_check_settings()
 
 
-@app.get("/", tags=["root"])
+@app.get("/", tags=["Приложение"])
 async def root():
     result = []
     return JSONResponse({"ok": True, "message": "Hello World Well", "result": result})
