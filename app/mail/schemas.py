@@ -16,6 +16,4 @@ class Email(BaseModel):
     to: str | list = Field(..., description="Адресат")
     subject: str = Field(..., description="Тема письма")
     message: str = Field(description="Тело письма", default=None)
-    attachments: list[Attachment] = Field(
-        description="Список вложений", default=None | list[Attachment]
-    )
+    attachments: list[Attachment] = Field(description="Список вложений", default=None)
