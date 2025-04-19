@@ -2,6 +2,10 @@ from pydantic import BaseModel, Field, ConfigDict
 
 
 class SSlog(BaseModel):
+    """
+    Структура лога
+    """
+
     model_config = ConfigDict(from_attributes=True)
     id: int
     log_type: str = Field(..., description="Тип события, [email, telegram, whatsapp]")
@@ -14,10 +18,18 @@ class SSlog(BaseModel):
 
 
 class ResultSSlog(BaseModel):
+    """
+    Результат запроса при получении лога по id
+    """
+
     ok: bool
     message: str
     result: SSlog | None
 
 
 class ResultSSlogs(ResultSSlog):
+    """
+    Результат запроса при получении списка логов
+    """
+
     result: list[SSlog]

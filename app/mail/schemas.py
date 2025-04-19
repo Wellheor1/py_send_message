@@ -2,6 +2,10 @@ from pydantic import BaseModel, Field
 
 
 class Attachment(BaseModel):
+    """
+    Структура вложения письма
+    """
+
     encoding: str = Field(
         description="Кодировка вложения (например PDF в base64)", default=None
     )
@@ -13,6 +17,10 @@ class Attachment(BaseModel):
 
 
 class Email(BaseModel):
+    """
+    Структура письма для отправки
+    """
+
     to: str | list = Field(..., description="Адресат")
     subject: str = Field(..., description="Тема письма")
     message: str = Field(description="Тело письма", default=None)
@@ -21,7 +29,7 @@ class Email(BaseModel):
 
 class SendingError(BaseModel):
     """
-    1
+    Ошибка отправки
     """
 
     code: int = Field(default=..., description="Код ошибки")
@@ -30,7 +38,7 @@ class SendingError(BaseModel):
 
 class SendingErrorWithAddress(BaseModel):
     """
-    2
+    Ошибка отправки с адресом получателя
     """
 
     recipient: str = Field(default=..., description="Адрес получателя")
@@ -38,6 +46,10 @@ class SendingErrorWithAddress(BaseModel):
 
 
 class ResultSend(BaseModel):
+    """
+    Результат запроса на отправку email
+    """
+
     ok: bool = Field(default="", description="Результат запроса")
     message: str = Field(default="", description="Сообщение")
     result: list[SendingErrorWithAddress] = Field(

@@ -13,4 +13,5 @@ router = APIRouter(
 @router.post("/sends", summary="Отправка писем", response_model=ResultSend)
 async def send_mails(body: list[Email]):
     result = await sends(body)
+    # todo Логировать
     return JSONResponse(result)
