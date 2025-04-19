@@ -4,8 +4,8 @@ from app.slog.models import LogType
 
 
 class QueryParamSlog(BaseModel):
-    sender: str = Field(..., description="Отправитель")
-    recipient: str = Field(..., description="Получатель")
+    sender: str = Field(None, description="Отправитель")
+    recipient: str = Field(None, description="Получатель")
     log_type: LogType | None = Field(None, description="Тип события")
     status: bool | None = Field(None, description="Статус события")
     outer_id: int | None = Field(None, description="id внешней системы")
@@ -17,3 +17,7 @@ class QueryParamSlog(BaseModel):
         }
         filtered_data = {key: value for key, value in data.items() if value is not None}
         return filtered_data
+
+
+class QueryParamSlogId(QueryParamSlog):
+    slog_id: int | None = Field(None, description="id приложения")
