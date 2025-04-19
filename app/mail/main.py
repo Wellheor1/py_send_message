@@ -27,4 +27,5 @@ async def sends(emails: list[Email]):
             result_send = server.sendmail(SMTP_USER, email.to, body.as_string())
             if result_send:
                 errors.extend(create_errors_body(result_send))
+            # todo надо еще логировать в общем (успешные не успешные)
     return {"ok": True, "message": "", "result": errors}
