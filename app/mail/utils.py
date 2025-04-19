@@ -37,7 +37,9 @@ def get_encoder(encoding: str):
     return result
 
 
-def create_attachment(filename, content, content_type, encoding=None):
+def create_attachment(
+    filename, content, content_type, encoding=None
+) -> MIMEApplication:
     if encoding:
         encoder = get_encoder(encoding)
         current_attachment = MIMEApplication(content, content_type, encoder)
@@ -55,3 +57,11 @@ def create_body(subject: str, message: str) -> MIMEMultipart:
     text_part = MIMEText(message, "plain")
     body.attach(text_part)
     return body
+
+
+def create_errors_body(errors: dict[str, tuple[int, str]]) -> list:
+    result = []
+    for recipient, error in errors.items():
+        code, title = error
+        result.append({"recipient": recipient, "error": {"code": code, "title": title}})
+    return result

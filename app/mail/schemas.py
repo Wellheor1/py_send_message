@@ -17,3 +17,29 @@ class Email(BaseModel):
     subject: str = Field(..., description="Тема письма")
     message: str = Field(description="Тело письма", default=None)
     attachments: list[Attachment] = Field(description="Список вложений", default=None)
+
+
+class SendingError(BaseModel):
+    """
+    1
+    """
+
+    code: int = Field(default=..., description="Код ошибки")
+    title: str = Field(default=..., description="Наименование ошибки")
+
+
+class SendingErrorWithAddress(BaseModel):
+    """
+    2
+    """
+
+    recipient: str = Field(default=..., description="Адрес получателя")
+    error: SendingError = Field(..., description="Ошибка")
+
+
+class ResultSend(BaseModel):
+    ok: bool = Field(default="", description="Результат запроса")
+    message: str = Field(default="", description="Сообщение")
+    result: list[SendingErrorWithAddress] = Field(
+        default=[], description="Результат, список ошибок"
+    )
