@@ -1,13 +1,15 @@
 import functools
 import logging
 
+logger = logging.getLogger("uvicorn.error")
+
 
 def logged(function):
     @functools.wraps(function)
     async def wrapper(*args, **kwargs):
-        logging.info("до функции")
+        logger.info("до функции")
         result = await function(*args, **kwargs)
-        logging.info("после функции")
+        logger.info("после функции")
         return result
 
     return wrapper
