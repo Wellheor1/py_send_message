@@ -4,14 +4,12 @@ from app.slog.models import LogType
 
 
 class QueryParamSlog(BaseModel):
-    id: int | None = Field(None, description="id события")
     log_type: LogType | None = Field(None, description="Тип события")
     status: bool | None = Field(None, description="Статус события")
     outer_id: int | None = Field(None, description="id внешней системы")
 
     def to_dict(self) -> dict:
         data = {
-            "id": self.id,
             "log_type": self.log_type,
             "status": self.status,
             "outer_id": self.outer_id,
