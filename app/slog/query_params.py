@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from app.slog.models import LogType
 
 
-class QueryParamSlog(BaseModel):
+class QueryParamGetSlog(BaseModel):
     sender: str = Field(None, description="Отправитель")
     recipient: str = Field(None, description="Получатель")
     log_type: LogType | None = Field(None, description="Тип события")
@@ -22,5 +22,13 @@ class QueryParamSlog(BaseModel):
         return filtered_data
 
 
-class QueryParamSlogId(QueryParamSlog):
+class QueryParamGetSlogWithId(QueryParamGetSlog):
     id: int | None = Field(None, description="id приложения")
+
+
+class QueryParamDeleteSlog(BaseModel):
+    """
+    Удаление логов старше count_days
+    """
+
+    count_days: int | None = Field(180, description="Количество дней")
