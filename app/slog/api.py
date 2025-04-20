@@ -21,12 +21,12 @@ def logged(function):
     return wrapper
 
 
-async def delete_slog(count_days: int = 180):
+async def delete_slog_older(count_days: int = 180):
     current_day = datetime.date.today()
     prev_day = current_day - datetime.timedelta(days=count_days)
     async with async_session_maker() as session:
         async with session.begin():
-            query = delete(Slog).filter_by(created_at__lte=prev_day)
+            query = delete(Slog).filter(Slog.created_at <= prev_day)
             result = await session.execute(query)
             try:
                 await session.commit()

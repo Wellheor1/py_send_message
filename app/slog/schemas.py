@@ -33,3 +33,7 @@ class ResultSSlogs(ResultSSlog):
     """
 
     result: list[SSlog]
+
+
+class ResultDeleteSSlog(ResultSSlog):
+    result: int
