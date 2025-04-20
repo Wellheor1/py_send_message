@@ -5,7 +5,7 @@ from app.slog.models import Slog
 from app.slog.query_params import QueryParamSlog, QueryParamSlogId
 from app.slog.request_body import SSlogAdd
 from app.slog.schemas import ResultSSlog, ResultSSlogs
-from app.slog.main import logged
+from app.slog.api import logged
 
 router = APIRouter(
     prefix="/slogs",
