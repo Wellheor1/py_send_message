@@ -68,6 +68,18 @@ def create_errors_body(errors: dict[str, tuple[int, str]]) -> list:
     return result
 
 
+def create_result_send(recipients, errors=None):
+    if errors:
+        result = {
+            "recipients": recipients,
+            "status": False,
+            "errors": create_errors_body(errors),
+        }
+    else:
+        result = {"recipients": recipients, "status": True, "errors": []}
+    return result
+
+
 def create_body_with_attachments(email: Email):
     body = create_body(email.subject, email.message)
     for attachment in email.attachments:

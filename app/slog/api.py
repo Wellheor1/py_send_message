@@ -1,23 +1,29 @@
 import datetime
-import functools
 import logging
 from sqlalchemy import delete
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.dao.base import add
 from app.database import async_session_maker
+from app.mail.settings import SMTP_USER
 from app.slog.models import Slog
 
 logger = logging.getLogger("uvicorn.error")
 
 
-def logged(function):
-    @functools.wraps(function)
-    async def wrapper(*args, **kwargs):
-        result = await function(*args, **kwargs)
-        logger.info("после функции")
-        return result
-
-    return wrapper
+async def email_logged(result_send: dict[str, list]) -> None:
+    for value in result_send.values():
+        for email in value:
+            recipients = email.get("recipient")
+            status = email.get("status")
+            logged_info = {
+                "log_type": "mail",
+                "sender": SMTP_USER,
+                "recipient": recipients,
+                "status": status,
+                "outer_id": "",
+            }
+            await add(Slog, **logged_info)
 
 
 async def delete_slog_older(count_days: int = 180):

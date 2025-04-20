@@ -9,7 +9,7 @@ from app.slog.query_params import (
 )
 from app.slog.request_body import SSlogAdd
 from app.slog.schemas import ResultSSlog, ResultSSlogs, ResultDeleteSSlog
-from app.slog.api import logged, delete_slog_older
+from app.slog.api import delete_slog_older
 
 router = APIRouter(
     prefix="/slogs",
@@ -18,7 +18,6 @@ router = APIRouter(
 
 
 @router.get("/", summary="Получить все записи логов")
-@logged
 async def get_all_slogs(query_params: QueryParamGetSlog = Query()) -> ResultSSlogs:
     slogs = await find_all(Slog, **query_params.to_dict())
     result = ResultSSlogs(ok=True, message="", result=slogs)
@@ -26,7 +25,6 @@ async def get_all_slogs(query_params: QueryParamGetSlog = Query()) -> ResultSSlo
 
 
 @router.get("/one", summary="Получить одну запись логов")
-@logged
 async def get_slog_by_id(
     query_params: QueryParamGetSlogWithId = Query(),
 ) -> ResultSSlog:
@@ -42,7 +40,6 @@ async def get_slog_by_id(
 
 
 @router.post("/add", summary="Создать новый лог")
-@logged
 async def add_slog(request_body: SSlogAdd = Body()) -> ResultSSlog:
     slog = await add(Slog, **request_body.to_dict())
     if slog:
@@ -56,7 +53,6 @@ async def add_slog(request_body: SSlogAdd = Body()) -> ResultSSlog:
 
 
 @router.delete("/", summary="Удалить логи")
-@logged
 async def delete_slog(
     query_params: QueryParamDeleteSlog = Query(),
 ) -> ResultDeleteSSlog:

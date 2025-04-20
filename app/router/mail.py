@@ -1,9 +1,8 @@
-from fastapi.responses import JSONResponse
 from fastapi import APIRouter
 
 from app.mail.api import sends
 from app.mail.schemas import Email, ResultSend
-from app.slog.api import logged
+from app.slog.api import email_logged
 
 router = APIRouter(
     prefix="/mail",
@@ -12,8 +11,10 @@ router = APIRouter(
 
 
 @router.post("/sends", summary="Отправка писем", response_model=ResultSend)
-@logged
 async def send_mails(body: list[Email]):
-    result = await sends(body)
-    # todo Логировать
-    return JSONResponse(result)
+    result_send = await sends(body)
+    await email_logged(result_send.get("result"))
+    result = ResultSend(
+        ok=True, message="", result=result_send.get("result").get("errors")
+    )
+    return result

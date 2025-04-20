@@ -2,8 +2,8 @@ from app.mail.schemas import Email
 from app.mail.settings import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
 from app.mail.utils import (
     create_smtp,
-    create_errors_body,
     create_body_with_attachments,
+    create_result_send,
 )
 
 
@@ -22,12 +22,15 @@ async def send(email: Email, session=None):
 
 async def sends(emails: list[Email]):
     smtp = create_smtp()
+    success = []
     errors = []
     with smtp(SMTP_HOST, SMTP_PORT) as server:
         server.login(SMTP_USER, SMTP_PASSWORD)
         for email in emails:
             result_send = await send(email, server)
             if result_send:
-                errors.extend(create_errors_body(result_send))
-            # todo надо еще логировать в общем (успешные не успешные)
-    return {"ok": True, "message": "", "result": errors}
+                errors.append(create_result_send(email.to, result_send))
+            else:
+                success.append(create_result_send(email.to, result_send))
+    result = {"success": success, "errors": errors}
+    return {"ok": True, "message": "", "result": result}

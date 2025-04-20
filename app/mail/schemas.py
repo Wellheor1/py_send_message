@@ -42,7 +42,7 @@ class SendingErrorWithAddress(BaseModel):
     """
 
     recipient: str = Field(default=..., description="Адрес получателя")
-    error: SendingError = Field(..., description="Ошибка")
+    errors: SendingError = Field(..., description="Ошибка")
 
 
 class ResultSend(BaseModel):
