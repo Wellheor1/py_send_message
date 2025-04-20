@@ -6,6 +6,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from app.mail.schemas import Email
 from app.mail.settings import SMTP_SECURE
 
 logger = logging.getLogger("uvicorn.error")
@@ -65,3 +66,17 @@ def create_errors_body(errors: dict[str, tuple[int, str]]) -> list:
         code, title = error
         result.append({"recipient": recipient, "error": {"code": code, "title": title}})
     return result
+
+
+def create_body_with_attachments(email: Email):
+    body = create_body(email.subject, email.message)
+    for attachment in email.attachments:
+        body.attach(
+            create_attachment(
+                attachment.filename,
+                attachment.content,
+                attachment.content_type,
+                attachment.encoding,
+            )
+        )
+    return body
