@@ -11,6 +11,8 @@ from os.path import dirname, abspath
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from app.database import DATABASE_URL, Base
+
+# Необходимо импортировать все таблицы сюда, иначе он их удалит, т.к в metadata не будет этих таблиц
 from app.slog.models import Slog  # noqa: F401
 
 config = context.config
