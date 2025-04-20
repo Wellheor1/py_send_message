@@ -12,12 +12,15 @@ class QueryParamSlog(BaseModel):
 
     def to_dict(self) -> dict:
         data = {
+            "sender": self.sender,
+            "recipient": self.recipient,
             "log_type": self.log_type,
             "status": self.status,
+            "outer_id": self.outer_id,
         }
         filtered_data = {key: value for key, value in data.items() if value is not None}
         return filtered_data
 
 
 class QueryParamSlogId(QueryParamSlog):
-    slog_id: int | None = Field(None, description="id приложения")
+    id: int | None = Field(None, description="id приложения")
