@@ -1,5 +1,6 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
+from sqlalchemy import delete as sqlalchemy_delete
 from app.database import async_session_maker
 
 
@@ -28,3 +29,16 @@ async def add(model, **values):
                 await session.rollback()
                 raise e
             return new_instance
+
+
+async def delete(model, **filter_by):
+    async with async_session_maker() as session:
+        async with session.begin():
+            query = sqlalchemy_delete(model).filter_by(**filter_by)
+            result = await session.execute(query)
+            try:
+                await session.commit()
+            except SQLAlchemyError as e:
+                await session.rollback()
+                raise e
+            return result.rowcount
