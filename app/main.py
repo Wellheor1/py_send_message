@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
+from redis import asyncio as aioredis
 
 from app.auth.main import verify_bearer_token_v2
 from app.router.mail import router as mail_router
@@ -9,6 +10,10 @@ from app.mail.utils import check_settings as mail_check_settings
 from app.utils import check_settings as main_check_settings
 
 app = FastAPI(dependencies=[Depends(verify_bearer_token_v2)])
+
+redis = aioredis.from_url(
+    "redis://127.0.0.1:6379/2", encoding="utf-8", decode_responses=True
+)
 
 main_check_settings()
 
