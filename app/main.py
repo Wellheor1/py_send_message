@@ -37,7 +37,6 @@ async def root():
 def store_in_cache(key: str, value: dict, ttl: int = 60):
     try:
         r = get_redis()
-        print(r)
         serialized_value = json.dumps(value)
         r.setex(key, ttl, serialized_value)
         return {"message": f"Data stored in cache with key {key} for {ttl} seconds"}
@@ -65,7 +64,7 @@ def retrieve_from_cache(key: str):
 @app.post("/tasks/add", tags=["Приложение"])
 def start_task(x: int, y: int):
     try:
-        task = example_task.delay(x, y)  # Запускаем задачу асинхронно
+        task = example_task.delay(x, y)
         return {"task_id": task.id, "status": "Task started"}
     except Exception as e:
         return HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
