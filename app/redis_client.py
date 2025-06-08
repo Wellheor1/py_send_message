@@ -34,7 +34,7 @@ def close_redis():
 
 
 def get_redis() -> Redis:
-    yield redis
+    return redis
 
 
 def cache(expire: int = 60):

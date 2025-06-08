@@ -37,6 +37,7 @@ async def root():
 def store_in_cache(key: str, value: dict, ttl: int = 60):
     try:
         r = get_redis()
+        print(r)
         serialized_value = json.dumps(value)
         r.setex(key, ttl, serialized_value)
         return {"message": f"Data stored in cache with key {key} for {ttl} seconds"}
@@ -51,11 +52,12 @@ def retrieve_from_cache(key: str):
     try:
         r = get_redis()
         cached_value = r.get(key)
-        if cached_value is None:
-            raise HTTPException(status_code=404, detail="Key not found in cache")
+        print(cached_value)
+        if not cached_value:
+            return HTTPException(status_code=404, detail="Key not found in cache")
         return json.loads(cached_value)
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=500, detail=f"Failed to retrieve from cache: {str(e)}"
         )
 
