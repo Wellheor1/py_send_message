@@ -20,6 +20,8 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 REDIS_PASSWORD = None
 
+# Настройка подключения к celery
+
 
 try:
     from app.local_settings import *  # noqa: F403

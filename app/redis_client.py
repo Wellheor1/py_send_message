@@ -12,12 +12,17 @@ redis = None
 logger = logging.getLogger("uvicorn.error")
 
 
-async def init_redis():
-    global redis
+def create_redis_url():
     if REDIS_PASSWORD:
         redis_url = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
     else:
         redis_url = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+    return redis_url
+
+
+async def init_redis():
+    global redis
+    redis_url = create_redis_url()
     redis = await aioredis.from_url(redis_url, decode_responses=True)
 
 
