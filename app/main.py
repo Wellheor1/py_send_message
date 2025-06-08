@@ -42,7 +42,7 @@ def store_in_cache(key: str, value: dict, ttl: int = 60):
         r.setex(key, ttl, serialized_value)
         return {"message": f"Data stored in cache with key {key} for {ttl} seconds"}
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=500, detail=f"Failed to store in cache: {str(e)}"
         )
 
@@ -68,7 +68,7 @@ def start_task(x: int, y: int):
         task = example_task.delay(x, y)  # Запускаем задачу асинхронно
         return {"task_id": task.id, "status": "Task started"}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
+        return HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
 
 
 @app.get("/tasks/status/", tags=["Приложение"])
@@ -82,7 +82,7 @@ def get_task_status(task_id: str):
         else:
             return {"task_id": task_id, "status": task.state}
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=500, detail=f"Failed to get task status: {str(e)}"
         )
 
