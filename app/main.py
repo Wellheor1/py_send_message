@@ -69,7 +69,6 @@ def retrieve_from_cache(key: str):
     try:
         r = get_redis()
         cached_value = r.get(key)
-        print(cached_value)
         if not cached_value:
             return HTTPException(status_code=404, detail="Key not found in cache")
         return json.loads(cached_value)
