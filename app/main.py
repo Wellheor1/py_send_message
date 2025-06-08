@@ -57,7 +57,7 @@ def store_in_cache(key: str, value: dict, ttl: int = 60):
         r.setex(key, ttl, serialized_value)
         return {"message": f"Data stored in cache with key {key} for {ttl} seconds"}
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=500, detail=f"Failed to store in cache: {str(e)}"
         )
 
@@ -74,7 +74,7 @@ def retrieve_from_cache(key: str):
             return HTTPException(status_code=404, detail="Key not found in cache")
         return json.loads(cached_value)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=500, detail=f"Failed to retrieve from cache: {str(e)}"
         )
 
