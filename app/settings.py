@@ -14,6 +14,12 @@ DB_NAME = "py_send_message"
 DB_USER = "postgres"
 DB_PASSWORD = "1234562"
 
+# Настройка подключения к Redis
+REDIS_HOST = "127.0.0.1"
+REDIS_PORT = 6379
+REDIS_DB = 0
+REDIS_PASSWORD = "123456"
+
 
 try:
     from app.local_settings import *  # noqa: F403
