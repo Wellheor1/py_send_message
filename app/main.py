@@ -1,4 +1,8 @@
 import json
+import logging
+import os
+import subprocess
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
@@ -12,19 +16,37 @@ from app.settings import MODULES
 from app.mail.utils import check_settings as mail_check_settings
 from app.utils import check_settings as main_check_settings
 
+logger = logging.getLogger("uvicorn.error")
+
 app = FastAPI(dependencies=[Depends(verify_bearer_token_v2)])
 
 main_check_settings()
+
+celery_worker_process = None
 
 
 @app.on_event("startup")
 def startup_event():
     init_redis()
+    logger.info("Connecting to redis")
+    global celery_worker_process
+    celery_worker_process = subprocess.Popen(
+        ["celery", "-A", "myproject.celery", "worker", "--loglevel=info"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=os.environ.copy(),
+    )
+    logger.info("worker celery started")
 
 
 @app.on_event("shutdown")
 def shutdown_event():
     close_redis()
+    logger.info("Disconnecting from redis")
+    global celery_worker_process
+    if celery_worker_process:
+        celery_worker_process.terminate()
+        logger.info("worker celery stopped")
 
 
 @app.get("/", tags=["Приложение"], summary="Проверка работоспособности приложения")
