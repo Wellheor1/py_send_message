@@ -1,14 +1,16 @@
 import json
 import logging
-import os
-import subprocess
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.auth.main import verify_bearer_token_v2
 from app.redis_client import init_redis, close_redis, get_redis
-from app.celery_app import app as celery_app
+from app.celery_app import (
+    app as celery_app,
+    start_worker as start_celery_worker,
+    stop_worker as stop_celery_worker,
+)
 from app.tasks import example_task
 from app.router.mail import router as mail_router
 from app.router.slog import router as slog_router
@@ -29,13 +31,7 @@ celery_worker_process = None
 def startup_event():
     init_redis()
     logger.info("Connecting to redis")
-    global celery_worker_process
-    celery_worker_process = subprocess.Popen(
-        ["celery", "-A", "myproject.celery", "worker", "--loglevel=info"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        env=os.environ.copy(),
-    )
+    start_celery_worker()
     logger.info("Worker celery started")
 
 
@@ -43,10 +39,8 @@ def startup_event():
 def shutdown_event():
     close_redis()
     logger.info("Disconnecting from redis")
-    global celery_worker_process
-    if celery_worker_process:
-        celery_worker_process.terminate()
-        logger.info("Worker celery stopped")
+    stop_celery_worker()
+    logger.info("Worker celery stopped")
 
 
 @app.get("/", tags=["Приложение"], summary="Проверка работоспособности приложения")
