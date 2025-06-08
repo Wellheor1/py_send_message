@@ -30,17 +30,13 @@ celery_worker_process = None
 @app.on_event("startup")
 def startup_event():
     init_redis()
-    logger.info("Connecting to redis")
     start_celery_worker()
-    logger.info("Worker celery started")
 
 
 @app.on_event("shutdown")
 def shutdown_event():
     close_redis()
-    logger.info("Disconnecting from redis")
     stop_celery_worker()
-    logger.info("Worker celery stopped")
 
 
 @app.get("/", tags=["Приложение"], summary="Проверка работоспособности приложения")

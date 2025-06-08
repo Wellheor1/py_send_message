@@ -32,9 +32,11 @@ def start_worker():
         stderr=subprocess.PIPE,
         env=os.environ.copy(),
     )
+    logger.info("Worker celery started")
 
 
 def stop_worker():
     global celery_worker_process
     if celery_worker_process:
         celery_worker_process.terminate()
+        logger.info("Worker celery stopped")
