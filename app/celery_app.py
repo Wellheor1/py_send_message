@@ -8,7 +8,9 @@ from app.redis_client import create_redis_url
 logger = logging.getLogger("uvicorn.error")
 
 redis_url = create_redis_url()
-app = Celery("myapp", broker=redis_url, backend=redis_url, include=["tasks"])
+app = Celery(
+    "py_send_message", broker=redis_url, backend=redis_url, include=["app.tasks"]
+)
 
 # Настройки Celery
 app.conf.update(
@@ -25,7 +27,7 @@ celery_worker_process = None
 def start_worker():
     global celery_worker_process
     celery_worker_process = subprocess.Popen(
-        ["celery", "-A", "myproject.celery", "worker", "--loglevel=info"],
+        ["celery", "-A", "app.celery_app", "worker", "--loglevel=info"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         env=os.environ.copy(),
