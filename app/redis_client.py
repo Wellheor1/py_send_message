@@ -6,13 +6,19 @@ from typing import Callable
 import aioredis
 from contextlib import asynccontextmanager
 
+from app.settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
+
 redis = None
 logger = logging.getLogger("uvicorn.error")
 
 
 async def init_redis():
     global redis
-    redis = await aioredis.from_url("redis://127.0.0.1:6379/2", decode_responses=True)
+    if REDIS_PASSWORD:
+        redis_url = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+    else:
+        redis_url = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+    redis = await aioredis.from_url(redis_url, decode_responses=True)
 
 
 async def close_redis():
