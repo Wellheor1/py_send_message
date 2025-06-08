@@ -36,7 +36,7 @@ def startup_event():
         stderr=subprocess.PIPE,
         env=os.environ.copy(),
     )
-    logger.info("worker celery started")
+    logger.info("Worker celery started")
 
 
 @app.on_event("shutdown")
@@ -46,7 +46,7 @@ def shutdown_event():
     global celery_worker_process
     if celery_worker_process:
         celery_worker_process.terminate()
-        logger.info("worker celery stopped")
+        logger.info("Worker celery stopped")
 
 
 @app.get("/", tags=["Приложение"], summary="Проверка работоспособности приложения")
