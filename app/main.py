@@ -87,7 +87,7 @@ def start_task(x: int, y: int):
         task = example_task.delay(x, y)
         return {"task_id": task.id, "status": "Task started"}
     except Exception as e:
-        return HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
 
 
 @app.get(
@@ -105,7 +105,7 @@ def get_task_status(task_id: str):
         else:
             return {"task_id": task_id, "status": task.state}
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=500, detail=f"Failed to get task status: {str(e)}"
         )
 
