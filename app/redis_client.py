@@ -4,7 +4,8 @@ from functools import wraps
 from typing import Callable
 
 import redis as redis_app
-from contextlib import asynccontextmanager
+
+from redis import Redis
 
 from app.settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
 
@@ -20,20 +21,19 @@ def create_redis_url():
     return redis_url
 
 
-async def init_redis():
+def init_redis():
     global redis
     redis_url = create_redis_url()
-    redis = await redis_app.from_url(redis_url, decode_responses=True)
+    redis = redis_app.from_url(redis_url, decode_responses=True)
 
 
-async def close_redis():
+def close_redis():
     global redis
     if redis:
-        await redis.close()
+        redis.close()
 
 
-@asynccontextmanager
-async def get_redis():
+def get_redis() -> Redis:
     yield redis
 
 
@@ -46,11 +46,11 @@ def cache(expire: int = 60):
                     # Формируем уникальный ключ для кэша
                     cache_key = f"{func.__name__}:{str(args)}:{str(kwargs)}"
                     # Проверяем, есть ли данные в кэше
-                    cached_result = await r.get(cache_key)
+                    cached_result = r.get(cache_key)
                     if cached_result:
                         return json.loads(cached_result)
                     result = await func(*args, **kwargs)
-                    await r.setex(cache_key, expire, json.dumps(result))
+                    r.setex(cache_key, expire, json.dumps(result))
                     return result
             except Exception as e:
                 logger.error(f"Redis cache error: {e}")

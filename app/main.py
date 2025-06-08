@@ -1,6 +1,4 @@
 import json
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
@@ -19,11 +17,14 @@ app = FastAPI(dependencies=[Depends(verify_bearer_token_v2)])
 main_check_settings()
 
 
-@asynccontextmanager
-async def lifespan():
-    await init_redis()
-    yield
-    await close_redis()
+@app.on_event("startup")
+def startup_event():
+    init_redis()
+
+
+@app.on_event("shutdown")
+def shutdown_event():
+    close_redis()
 
 
 @app.get("/", tags=["Приложение"])
@@ -33,12 +34,12 @@ async def root():
 
 
 @app.post("/cache/store/", tags=["Приложение"])
-async def store_in_cache(key: str, value: dict, ttl: int = 60):
+def store_in_cache(key: str, value: dict, ttl: int = 60):
     try:
-        async with get_redis() as r:
-            serialized_value = json.dumps(value)
-            await r.setex(key, ttl, serialized_value)
-            return {"message": f"Data stored in cache with key {key} for {ttl} seconds"}
+        r = get_redis()
+        serialized_value = json.dumps(value)
+        r.setex(key, ttl, serialized_value)
+        return {"message": f"Data stored in cache with key {key} for {ttl} seconds"}
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to store in cache: {str(e)}"
@@ -46,21 +47,21 @@ async def store_in_cache(key: str, value: dict, ttl: int = 60):
 
 
 @app.get("/cache/retrieve/", tags=["Приложение"])
-async def retrieve_from_cache(key: str):
+def retrieve_from_cache(key: str):
     try:
-        async with get_redis() as r:
-            cached_value = await r.get(key)
-            if cached_value is None:
-                raise HTTPException(status_code=404, detail="Key not found in cache")
-            return json.loads(cached_value)
+        r = get_redis()
+        cached_value = r.get(key)
+        if cached_value is None:
+            raise HTTPException(status_code=404, detail="Key not found in cache")
+        return json.loads(cached_value)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Failed to retrieve from cache: {str(e)}"
         )
 
 
-@app.post("/tasks/add")
-async def start_task(x: int, y: int):
+@app.post("/tasks/add", tags=["Приложение"])
+def start_task(x: int, y: int):
     try:
         task = example_task.delay(x, y)  # Запускаем задачу асинхронно
         return {"task_id": task.id, "status": "Task started"}
@@ -68,8 +69,8 @@ async def start_task(x: int, y: int):
         raise HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
 
 
-@app.get("/tasks/status/")
-async def get_task_status(task_id: str):
+@app.get("/tasks/status/", tags=["Приложение"])
+def get_task_status(task_id: str):
     try:
         task = celery_app.AsyncResult(task_id)
         if task.state == "PENDING":
