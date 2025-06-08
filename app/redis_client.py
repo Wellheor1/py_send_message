@@ -3,7 +3,7 @@ import logging
 from functools import wraps
 from typing import Callable
 
-import aioredis
+import redis as redis_app
 from contextlib import asynccontextmanager
 
 from app.settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
@@ -23,7 +23,7 @@ def create_redis_url():
 async def init_redis():
     global redis
     redis_url = create_redis_url()
-    redis = await aioredis.from_url(redis_url, decode_responses=True)
+    redis = await redis_app.from_url(redis_url, decode_responses=True)
 
 
 async def close_redis():
