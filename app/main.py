@@ -27,13 +27,17 @@ def shutdown_event():
     close_redis()
 
 
-@app.get("/", tags=["Приложение"])
+@app.get("/", tags=["Приложение"], summary="Проверка работоспособности приложения")
 async def root():
     result = []
     return JSONResponse({"ok": True, "message": "Hello World Well", "result": result})
 
 
-@app.post("/cache/store/", tags=["Приложение"])
+@app.post(
+    "/cache/store",
+    tags=["Приложение"],
+    summary="Проверка работоспособности redis",
+)
 def store_in_cache(key: str, value: dict, ttl: int = 60):
     try:
         r = get_redis()
@@ -46,7 +50,9 @@ def store_in_cache(key: str, value: dict, ttl: int = 60):
         )
 
 
-@app.get("/cache/retrieve/", tags=["Приложение"])
+@app.get(
+    "/cache/retrieve", tags=["Приложение"], summary="Проверка работоспособности redis"
+)
 def retrieve_from_cache(key: str):
     try:
         r = get_redis()
@@ -61,7 +67,9 @@ def retrieve_from_cache(key: str):
         )
 
 
-@app.post("/tasks/add", tags=["Приложение"])
+@app.post(
+    "/celery/add-task", tags=["Приложение"], summary="Проверка работоспособности celery"
+)
 def start_task(x: int, y: int):
     try:
         task = example_task.delay(x, y)
@@ -70,7 +78,11 @@ def start_task(x: int, y: int):
         return HTTPException(status_code=500, detail=f"Failed to start task: {str(e)}")
 
 
-@app.get("/tasks/status/", tags=["Приложение"])
+@app.get(
+    "/celery/task-status",
+    tags=["Приложение"],
+    summary="Проверка работоспособности celery",
+)
 def get_task_status(task_id: str):
     try:
         task = celery_app.AsyncResult(task_id)
