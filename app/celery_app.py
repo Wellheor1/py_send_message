@@ -34,11 +34,7 @@ def start_worker():
             env=os.environ.copy(),
             text=True,
         )
-        stdout, stderr = celery_worker_process.communicate()
-        if celery_worker_process.returncode != 0:
-            logger.error(stderr)
-        else:
-            logger.info("Worker celery started")
+        logger.info("Worker celery started")
     except subprocess.CalledProcessError as e:
         logger.error(f"Error when launching celery: {e}")
     except FileNotFoundError:
