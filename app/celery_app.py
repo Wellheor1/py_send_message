@@ -9,7 +9,7 @@ logger = logging.getLogger("uvicorn.error")
 
 redis_url = create_redis_url()
 app = Celery("py_send_message", broker=redis_url, backend=redis_url)
-app.autodiscover_tasks(["app"])
+app.autodiscover_tasks(["app", "app.mail"])
 app.conf.update(
     task_serializer="json",
     accept_content=["json"],
