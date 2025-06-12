@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.mail.api import sends
 from app.mail.schemas import Email, ResultSend, ResultSendViaCelery
-from app.mail.task import send_email
+from app.mail.celery_tasks import send_email
 from app.slog.api import email_logged
 
 router = APIRouter(

@@ -11,7 +11,7 @@ from app.celery_app import (
     start_worker as start_celery_worker,
     stop_worker as stop_celery_worker,
 )
-from app.tasks import example_task
+from app.celery_tasks import example_task
 from app.router.mail import router as mail_router
 from app.router.slog import router as slog_router
 from app.settings import MODULES
