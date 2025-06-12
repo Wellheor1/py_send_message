@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.mail.api import sends
-from app.mail.schemas import Email, ResultSend
+from app.mail.schemas import Email, ResultSend, ResultSendViaCelery
 from app.mail.task import send_email
 from app.slog.api import email_logged
 
@@ -22,7 +22,7 @@ async def send_emails(body: list[Email]):
 
 
 @router.post(
-    "/sends-deferred", summary="Отложенная отправка", response_model=ResultSend
+    "/sends-deferred", summary="Отложенная отправка", response_model=ResultSendViaCelery
 )
 async def send_via_celery(body: Email):
     task = send_email.delay(body)

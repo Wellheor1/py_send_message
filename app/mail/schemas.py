@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, Field
 
 
@@ -55,3 +57,14 @@ class ResultSend(BaseModel):
     result: list[SendingErrorWithAddress] = Field(
         default=[], description="Результат, список ошибок"
     )
+
+
+class ResultCelery(BaseModel):
+    task_id: UUID = Field(default="", description="id задачи")
+    status: str = Field(default="", description="Статус задачи")
+
+
+class ResultSendViaCelery(BaseModel):
+    ok: bool = Field(default="", description="Результат запроса")
+    message: str = Field(default="", description="Сообщение")
+    result: ResultCelery = Field(description="Ответ celery")
