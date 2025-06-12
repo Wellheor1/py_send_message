@@ -21,7 +21,9 @@ async def send_emails(body: list[Email]):
     return result
 
 
-@router.post("/sends-deferred", summary="Отправка писем", response_model=ResultSend)
+@router.post(
+    "/sends-deferred", summary="Отложенная отправка", response_model=ResultSend
+)
 async def send_via_celery(body: Email):
     task = send_email.delay(body)
     result = ResultSend(
