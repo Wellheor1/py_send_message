@@ -67,4 +67,4 @@ class ResultCelery(BaseModel):
 class ResultSendViaCelery(BaseModel):
     ok: bool = Field(default="", description="Результат запроса")
     message: str = Field(default="", description="Сообщение")
-    result: ResultCelery = Field(description="Ответ celery")
+    result: dict = Field(description="Ответ celery")
