@@ -24,8 +24,6 @@ app = FastAPI(dependencies=[Depends(verify_bearer_token_v2)])
 
 main_check_settings()
 
-celery_worker_process = None
-
 
 @app.on_event("startup")
 def startup_event():
