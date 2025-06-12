@@ -25,6 +25,11 @@ def init_redis():
     global redis
     redis_url = create_redis_url()
     redis = redis_app.from_url(redis_url, decode_responses=True)
+    redis_ping = redis.ping()
+    if redis_ping:
+        logger.info("Redis started")
+    else:
+        logger.error("Redis not started")
 
 
 def close_redis():
