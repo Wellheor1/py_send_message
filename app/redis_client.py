@@ -36,6 +36,7 @@ def close_redis():
     global redis
     if redis:
         redis.close()
+        logger.info("Redis stopped")
 
 
 def get_redis() -> Redis:
