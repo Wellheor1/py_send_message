@@ -10,7 +10,7 @@ from redis import Redis
 from app.settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
 
 redis = None
-logger = logging.getLogger("uvicorn.error")
+logger = logging.getLogger("fastapi")
 
 
 def create_redis_url():
