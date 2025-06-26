@@ -3,9 +3,14 @@ import os
 import subprocess
 
 from celery import Celery
+
+from app.logger_config import setup_logging
 from app.redis_client import create_redis_url
 
-logger = logging.getLogger("uvicorn.error")
+# logger = logging.getLogger("uvicorn.error")
+
+setup_logging()
+logger = logging.getLogger("celery")
 
 redis_url = create_redis_url()
 app = Celery("py_send_message", broker=redis_url, backend=redis_url)

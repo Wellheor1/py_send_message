@@ -1,10 +1,10 @@
 import json
-import logging
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.auth.main import verify_bearer_token_v2
+from app.logger_config import setup_logging
 from app.redis_client import init_redis, close_redis, get_redis
 from app.celery_app import (
     app as celery_app,
@@ -18,8 +18,7 @@ from app.settings import MODULES
 from app.mail.utils import check_settings as mail_check_settings
 from app.utils import check_settings as main_check_settings
 
-logger = logging.getLogger("uvicorn.error")
-
+setup_logging()
 app = FastAPI(dependencies=[Depends(verify_bearer_token_v2)])
 
 main_check_settings()
