@@ -80,7 +80,7 @@ def create_result_send(recipients, errors=None):
     return result
 
 
-def create_body_with_attachments(email: Email):
+def create_body_with_attachments(email: Email) -> MIMEMultipart:
     body = create_body(email.subject, email.message)
     for attachment in email.attachments:
         body.attach(
