@@ -10,7 +10,7 @@ from redis import Redis
 from app.settings import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
 
 redis = None
-logger = logging.getLogger("fastapi")
+logger = logging.getLogger("uvicorn.error")
 
 
 def create_redis_url():
@@ -27,16 +27,16 @@ def init_redis():
     redis = redis_app.from_url(redis_url, decode_responses=True)
     redis_ping = redis.ping()
     if redis_ping:
-        logger.info("Redis started")
+        logger.info("Redis connected")
     else:
-        logger.error("Redis not started")
+        logger.error("Redis not connected")
 
 
 def close_redis():
     global redis
     if redis:
         redis.close()
-        logger.info("Redis stopped")
+        logger.info("Redis disconnected")
 
 
 def get_redis() -> Redis:
@@ -49,9 +49,7 @@ def cache(expire: int = 60):
         async def wrapper(*args, **kwargs):
             try:
                 async with get_redis() as r:
-                    # Формируем уникальный ключ для кэша
                     cache_key = f"{func.__name__}:{str(args)}:{str(kwargs)}"
-                    # Проверяем, есть ли данные в кэше
                     cached_result = r.get(cache_key)
                     if cached_result:
                         return json.loads(cached_result)
