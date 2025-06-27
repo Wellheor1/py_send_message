@@ -28,7 +28,7 @@ logging_config = {
         },
     },
     "loggers": {
-        "celery": {
+        "celery_tasks": {
             "handlers": ["console", "celery_file"],
             "level": "INFO",
             "propagate": False,

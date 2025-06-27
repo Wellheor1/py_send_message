@@ -1,9 +1,9 @@
-import logging
+from celery.utils.log import get_task_logger
 
 from app.celery_app import app as celery_app
 import time
 
-logger = logging.getLogger("celery")
+logger = get_task_logger("celery_tasks")
 
 
 @celery_app.task
