@@ -24,10 +24,10 @@ async def get_all_slogs(query_params: QueryParamGetSlog = Query()):
     return result
 
 
-@router.get("/one", summary="Получить одну запись логов")
+@router.get("/one", summary="Получить одну запись логов", response_model=ResultSSlog)
 async def get_slog_by_id(
     query_params: QueryParamGetSlogWithId = Query(),
-) -> ResultSSlog:
+):
     slog = await find_one(Slog, **query_params.to_dict())
     if slog:
         ok = True
@@ -35,7 +35,7 @@ async def get_slog_by_id(
     else:
         ok = False
         message = "Такой записи нет"
-    result = ResultSSlog(ok=ok, message=message, result=slog)
+    result = {"ok": ok, "message": message, "result": slog}
     return result
 
 

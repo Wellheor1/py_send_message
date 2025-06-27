@@ -25,6 +25,18 @@ class QueryParamGetSlog(BaseModel):
 class QueryParamGetSlogWithId(QueryParamGetSlog):
     id: int | None = Field(None, description="id приложения")
 
+    def to_dict(self) -> dict:
+        data = {
+            "sender": self.sender,
+            "recipient": self.recipient,
+            "log_type": self.log_type,
+            "status": self.status,
+            "outer_id": self.outer_id,
+            "id": self.id,
+        }
+        filtered_data = {key: value for key, value in data.items() if value is not None}
+        return filtered_data
+
 
 class QueryParamDeleteSlog(BaseModel):
     """
