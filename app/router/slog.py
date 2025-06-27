@@ -17,10 +17,10 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary="Получить все записи логов")
-async def get_all_slogs(query_params: QueryParamGetSlog = Query()) -> ResultSSlogs:
+@router.get("/", summary="Получить все записи логов", response_model=ResultSSlogs)
+async def get_all_slogs(query_params: QueryParamGetSlog = Query()):
     slogs = await find_all(Slog, **query_params.to_dict())
-    result = ResultSSlogs(ok=True, message="", result=slogs)
+    result = {"ok": True, "message": "", "result": slogs}
     return result
 
 
