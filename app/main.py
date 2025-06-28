@@ -20,7 +20,7 @@ from app.utils import check_settings as main_check_settings
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(application: FastAPI):
     init_redis()
     start_celery_worker()
     yield
