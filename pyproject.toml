@@ -22,6 +22,9 @@ ruff = "^0.11.5"
 celery = "^5.5.3"
 redis = "^6.2.0"
 setuptools = "^80.9.0"
+pytest = "^8.4.1"
+pytest-asyncio = "^1.0.0"
+httpx = "^0.28.1"
 
 
 [build-system]
