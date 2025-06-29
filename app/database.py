@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import Annotated
 from sqlalchemy import func
@@ -8,9 +9,14 @@ from app.settings import DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT
 
 
 def get_db_url():
+    db_user = os.getenv("POSTGRES_USER", DB_USER)
+    db_password = os.getenv("POSTGRES_PASSWORD", DB_PASSWORD)
+    db_host = os.getenv("POSTGRES_HOST", DB_HOST)
+    db_port = os.getenv("POSTGRES_PORT", DB_PORT)
+    db_name = os.getenv("POSTGRES_DB", DB_NAME)
     return (
-        f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@"
-        f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        f"postgresql+asyncpg://{db_user}:{db_password}@"
+        f"{db_host}:{db_port}/{db_name}"
     )
 
 
