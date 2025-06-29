@@ -24,8 +24,6 @@ def create_redis_url():
 
 def init_redis():
     global redis
-    # redis_url = create_redis_url()
-    # redis = redis_app.from_url(redis_url, decode_responses=True)
     redis = redis_app.Redis(
         host=os.getenv("REDIS_HOST", REDIS_HOST),
         port=int(os.getenv("REDIS_PORT", REDIS_PORT)),
