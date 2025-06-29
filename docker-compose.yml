@@ -19,8 +19,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
     depends_on:
-      - redis
-      - postgres
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "alembic upgrade head && uvicorn app.main:app --reload --host 0.0.0.0 --port 80"
   postgres:
     image: postgres:16-alpine
     environment:
@@ -28,10 +32,13 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: py_send_message
       PGDATA: /var/lib/postgresql/data/pgdata
-#    ports:
-#      - "5440:5432"
     volumes:
       - ./pgdata:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d py_send_message"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   redis:
     image: redis:7.2-alpine
     volumes:
