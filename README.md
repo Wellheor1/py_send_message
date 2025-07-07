@@ -41,8 +41,3 @@ poetry install
 ```
 uvicorn app.main:app --reload
 ```
-
-### Боевой :)
-```
-python3 run_app.py
-```
