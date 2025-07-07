@@ -24,7 +24,25 @@ services:
       postgres:
         condition: service_healthy
     command: >
-      sh -c "alembic upgrade head && uvicorn app.main:app --reload --host 0.0.0.0 --port 80"
+      uvicorn app.main:app --reload --host 0.0.0.0 --port 80"
+  alembic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/code
+    environment:
+      - YOUR_ENV=development
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=py_send_message
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      alembic upgrade head
   postgres:
     image: postgres:16-alpine
     environment:
